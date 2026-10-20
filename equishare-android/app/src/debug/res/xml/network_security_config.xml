@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Solo en compilaciones DEBUG: permite HTTP para probar con el servidor Node.js en la red local
+     (por ejemplo http://192.168.1.50:3000/ desde un celular físico). -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>

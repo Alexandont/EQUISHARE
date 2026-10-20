@@ -1,0 +1,23 @@
+rules_version = '2';
+// Reglas de seguridad de Cloud Firestore para EQUISHARE.
+// Cada empresa (usuario autenticado) solo puede leer y escribir sus propios datos.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function esDueno(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+
+    match /usuarios/{uid} {
+      allow read: if esDueno(uid);
+      allow create, update: if esDueno(uid)
+        && request.resource.data.keys().hasOnly(['email', 'consentimientoPrivacidad']);
+      allow delete: if esDueno(uid);
+
+      match /favoritos/{equipoId} {
+        allow read, delete: if esDueno(uid);
+        allow create, update: if esDueno(uid)
+          && request.resource.data.keys().hasOnly(['nombre', 'categoria', 'agregadoEn']);
+      }
+    }
+  }
+}

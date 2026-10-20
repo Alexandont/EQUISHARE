@@ -1,0 +1,140 @@
+
+> equishare-api@1.0.0 test
+> node --test "test/*.test.js"
+
+TAP version 13
+# Subtest: GET /api/health responde ok en modo demo
+ok 1 - GET /api/health responde ok en modo demo
+  ---
+  duration_ms: 42.09028
+  type: 'test'
+  ...
+# Subtest: Catálogo público: lista, filtra por categoría y búsqueda, y ordena por distancia
+ok 2 - Catálogo público: lista, filtra por categoría y búsqueda, y ordena por distancia
+  ---
+  duration_ms: 49.587837
+  type: 'test'
+  ...
+# Subtest: Errores HTTP con contrato JSON: 401 sin token, 404 inexistente, 400 JSON inválido
+ok 3 - Errores HTTP con contrato JSON: 401 sin token, 404 inexistente, 400 JSON inválido
+  ---
+  duration_ms: 26.012467
+  type: 'test'
+  ...
+# Subtest: RN-01: registro con RUC válido; RUC inválido y duplicado se rechazan
+ok 4 - RN-01: registro con RUC válido; RUC inválido y duplicado se rechazan
+  ---
+  duration_ms: 16.750418
+  type: 'test'
+  ...
+# Subtest: CRUD de equipos con foto validada automáticamente (RN-04)
+ok 5 - CRUD de equipos con foto validada automáticamente (RN-04)
+  ---
+  duration_ms: 89.55168
+  type: 'test'
+  ...
+# Subtest: Reservas: cotización, anticipación (RN-07), solapamiento (RN-02) y flujo de estados
+ok 6 - Reservas: cotización, anticipación (RN-07), solapamiento (RN-02) y flujo de estados
+  ---
+  duration_ms: 66.814559
+  type: 'test'
+  ...
+# Subtest: RN-08: cancelación tardía genera 20 % de penalidad; temprana no
+ok 7 - RN-08: cancelación tardía genera 20 % de penalidad; temprana no
+  ---
+  duration_ms: 25.947709
+  type: 'test'
+  ...
+# Subtest: RN-05 y RN-06: reseñas dentro de 48 h y revisión automática tras 5 reseñas bajas
+ok 8 - RN-05 y RN-06: reseñas dentro de 48 h y revisión automática tras 5 reseñas bajas
+  ---
+  duration_ms: 157.001185
+  type: 'test'
+  ...
+# Subtest: No se elimina un equipo con reservas activas
+ok 9 - No se elimina un equipo con reservas activas
+  ---
+  duration_ms: 18.025552
+  type: 'test'
+  ...
+# Subtest: Modo Firebase: rechaza tokens inválidos y acepta los verificados
+ok 10 - Modo Firebase: rechaza tokens inválidos y acepta los verificados
+  ---
+  duration_ms: 10.397298
+  type: 'test'
+  ...
+# Subtest: RUC: acepta RUC con dígito verificador correcto
+ok 11 - RUC: acepta RUC con dígito verificador correcto
+  ---
+  duration_ms: 1.46979
+  type: 'test'
+  ...
+# Subtest: RUC: rechaza longitud, prefijo y dígito verificador incorrectos
+ok 12 - RUC: rechaza longitud, prefijo y dígito verificador incorrectos
+  ---
+  duration_ms: 1.909351
+  type: 'test'
+  ...
+# Subtest: RN-03: cotización con comisión del 12 % descontada al arrendador
+ok 13 - RN-03: cotización con comisión del 12 % descontada al arrendador
+  ---
+  duration_ms: 1.729735
+  type: 'test'
+  ...
+# Subtest: Días de alquiler incluyen ambas fechas
+ok 14 - Días de alquiler incluyen ambas fechas
+  ---
+  duration_ms: 0.162261
+  type: 'test'
+  ...
+# Subtest: RN-07: exige 24 horas de anticipación respecto a la entrega de las 08:00
+ok 15 - RN-07: exige 24 horas de anticipación respecto a la entrega de las 08:00
+  ---
+  duration_ms: 0.733288
+  type: 'test'
+  ...
+# Subtest: Fechas: formato y orden
+ok 16 - Fechas: formato y orden
+  ---
+  duration_ms: 0.277708
+  type: 'test'
+  ...
+# Subtest: RN-02: detecta solapamiento solo con reservas activas
+ok 17 - RN-02: detecta solapamiento solo con reservas activas
+  ---
+  duration_ms: 0.377665
+  type: 'test'
+  ...
+# Subtest: RN-08: penalidad del 20 % si se cancela con menos de 12 horas
+ok 18 - RN-08: penalidad del 20 % si se cancela con menos de 12 horas
+  ---
+  duration_ms: 0.22557
+  type: 'test'
+  ...
+# Subtest: RN-05: ventana de 48 horas para calificar
+ok 19 - RN-05: ventana de 48 horas para calificar
+  ---
+  duration_ms: 0.437085
+  type: 'test'
+  ...
+# Subtest: RN-06: revisión con promedio < 3.0 y al menos 5 reseñas
+ok 20 - RN-06: revisión con promedio < 3.0 y al menos 5 reseñas
+  ---
+  duration_ms: 0.453127
+  type: 'test'
+  ...
+# Subtest: Distancia haversine Trujillo centro - Huanchaco (~10 km)
+ok 21 - Distancia haversine Trujillo centro - Huanchaco (~10 km)
+  ---
+  duration_ms: 0.323538
+  type: 'test'
+  ...
+1..21
+# tests 21
+# suites 0
+# pass 21
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1053.417607

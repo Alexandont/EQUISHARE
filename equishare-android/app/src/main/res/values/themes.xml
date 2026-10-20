@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tema base de la ventana; los colores de Compose se definen en ui/theme/Theme.kt -->
+    <style name="Theme.Equishare" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/marca_primario</item>
+    </style>
+</resources>

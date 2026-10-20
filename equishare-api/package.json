@@ -1,0 +1,29 @@
+{
+  "name": "equishare-api",
+  "version": "1.0.0",
+  "description": "API REST de EQUISHARE: alquiler de equipos entre empresas (Node.js + Express)",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "seed": "node src/data/seed.js",
+    "test": "node --test \"test/*.test.js\""
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.3.0",
+    "helmet": "^8.3.0",
+    "image-size": "^2.0.4",
+    "jose": "^6.2.12",
+    "morgan": "^1.12.1",
+    "multer": "^2.4.0"
+  },
+  "devDependencies": {
+    "supertest": "^7.3.1"
+  }
+}

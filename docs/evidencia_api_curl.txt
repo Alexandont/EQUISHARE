@@ -1,0 +1,40 @@
+== Evidencia de consumo de la API REST EQUISHARE (2026-10-16T13:37Z) ==
+
+$ GET /api/health
+{"estado":"ok","servicio":"equishare-api","modoAutenticacion":"demo","hora":"2026-10-16T13:37:49.673Z"}
+
+$ PUT /api/empresas/me  (RUC con dígito verificador incorrecto)
+{"error":{"codigo":"VALIDACION","mensaje":"Los datos enviados no son válidos.","detalles":[{"campo":"ruc","mensaje":"El dígito verificador del RUC no es correcto."}]}}  -> HTTP 400
+
+$ PUT /api/empresas/me  (RUC válido)
+{"id":"empresa-prueba","razonSocial":"Empresa Prueba S.A.C.","ruc":"20131312955","telefono":"912345678","email":"empresa-prueba@demo.equishare","verificada":true,"calificacionComoArrendatario":0,"totalResenasComoArrendatario":0,"creadoEn":"2026-10-16T13:37:49.711Z"}  -> HTTP 201
+
+$ POST /api/equipos/fotos  (imagen de 300x200)
+{"error":{"codigo":"FOTO_RECHAZADA","mensaje":"La foto no pasó la validación automática.","detalles":["Resolución insuficiente (300x200). Mínimo 640x480 píxeles para que el equipo se vea con claridad."]}}  -> HTTP 422
+
+$ POST /api/equipos/fotos  (imagen de 800x600)
+{"id":"5a103e2e-42cd-4521-b62a-1f604e1569e8","url":"http://localhost:3300/uploads/5a103e2e-42cd-4521-b62a-1f604e1569e8.jpg","aprobada":true,"motivos":[]}  -> HTTP 201
+
+$ POST /api/equipos
+{"id":"e4895c89-5f3e-4b6a-a457-f72dfa29d321","empresaId":"empresa-prueba","empresaNombre":"Empresa Prueba S.A.C.","nombre":"Cortadora de cerámica","categoria":"HERRAMIENTAS","descripcion":"Cortadora eléctrica con disco diamantado de 7 pulgadas.","precioDia":35,"fotoUrl":"http://localhost:3300/uploads/5a103e2e-42cd-4521-b62a-1f604e1569e8.jpg","fotoId":"5a103e2e-42cd-4521-b62a-1f604e1569e8","lat":-8.11,"lng":-79.03,"direccion":"Centro de Trujillo","estado":"PUBLICADO","calificacionPromedio":0,"totalResenas":0,"creadoEn":"2026-10-16T13:37:49.805Z","actualizadoEn":"2026-10-16T13:37:49.805Z","distanciaKm":null}  -> HTTP 201
+
+$ PUT /api/equipos/{id}  (actualizar precio)
+{'id': 'e4895c89-5f3e-4b6a-a457-f72dfa29d321', 'nombre': 'Cortadora de cerámica', 'precioDia': 40, 'estado': 'PUBLICADO'}
+
+$ POST /api/reservas/cotizacion  (2026-10-19 a 2026-10-21)
+{"equipoId":"eq-demo-1","fechaInicio":"2026-10-19","fechaFin":"2026-10-21","disponible":true,"dias":3,"precioDia":80,"subtotal":240,"comision":28.8,"montoArrendador":211.2,"total":240}
+
+$ POST /api/reservas  (inicio hoy: incumple RN-07)
+{"error":{"codigo":"FECHAS_NO_VALIDAS","mensaje":"La reserva debe hacerse con al menos 24 horas de anticipación (entrega a las 08:00 del día de inicio).","detalles":["La reserva debe hacerse con al menos 24 horas de anticipación (entrega a las 08:00 del día de inicio)."]}}  -> HTTP 422
+
+$ POST /api/reservas  (2026-10-19 a 2026-10-21)
+{'id': 'd905d6b9-97a0-4263-b6c9-d71989f74e23', 'equipoNombre': 'Mezcladora de concreto 9 p3', 'fechaInicio': '2026-10-19', 'fechaFin': '2026-10-21', 'dias': 3, 'subtotal': 240, 'comision': 28.8, 'montoArrendador': 211.2, 'total': 240, 'estado': 'PENDIENTE'}
+
+$ POST /api/reservas  (mismas fechas, otra empresa: RN-02)
+{"error":{"codigo":"RESERVA_SOLAPADA","mensaje":"El equipo ya tiene una reserva activa en esas fechas. Elige otro rango.","detalles":[]}}  -> HTTP 409
+
+$ DELETE /api/equipos/{id}
+HTTP 204
+
+$ GET /api/equipos/{id} (eliminado)
+{"error":{"codigo":"NO_ENCONTRADO","mensaje":"El equipo no existe.","detalles":[]}}  -> HTTP 404

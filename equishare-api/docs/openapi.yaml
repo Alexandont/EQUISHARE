@@ -1,0 +1,335 @@
+openapi: 3.0.3
+info:
+  title: EQUISHARE API
+  version: 1.0.0
+  description: >
+    Contrato JSON de la API REST de EQUISHARE (alquiler de equipos entre empresas).
+    Todas las respuestas de error usan el formato { "error": { "codigo", "mensaje", "detalles" } }.
+    Autenticación: cabecera "Authorization: Bearer <ID token de Firebase>" (o "demo:<uid>" en modo demo).
+servers:
+  - url: http://10.0.2.2:3000
+    description: Servidor local visto desde el emulador de Android
+  - url: http://localhost:3000
+    description: Servidor local
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            codigo: { type: string, example: RESERVA_SOLAPADA }
+            mensaje: { type: string }
+            detalles: { type: array, items: {} }
+    Empresa:
+      type: object
+      properties:
+        id: { type: string }
+        razonSocial: { type: string }
+        ruc: { type: string, example: '20131312955' }
+        telefono: { type: string, example: '912345678' }
+        email: { type: string, nullable: true }
+        verificada: { type: boolean }
+        calificacionComoArrendatario: { type: number }
+        totalResenasComoArrendatario: { type: integer }
+        creadoEn: { type: string, format: date-time }
+    EmpresaEntrada:
+      type: object
+      required: [ruc, razonSocial, telefono]
+      properties:
+        ruc: { type: string }
+        razonSocial: { type: string, minLength: 3, maxLength: 120 }
+        telefono: { type: string, pattern: '^9\d{8}$' }
+    Categoria:
+      type: string
+      enum: [CONSTRUCCION, EVENTOS, HERRAMIENTAS, TECNOLOGIA]
+    Equipo:
+      type: object
+      properties:
+        id: { type: string }
+        empresaId: { type: string }
+        empresaNombre: { type: string }
+        nombre: { type: string }
+        categoria: { $ref: '#/components/schemas/Categoria' }
+        descripcion: { type: string }
+        precioDia: { type: number }
+        fotoUrl: { type: string, nullable: true }
+        fotoId: { type: string, nullable: true }
+        lat: { type: number }
+        lng: { type: number }
+        direccion: { type: string }
+        estado: { type: string, enum: [PUBLICADO, OCULTO, PENDIENTE_FOTO, EN_REVISION] }
+        calificacionPromedio: { type: number }
+        totalResenas: { type: integer }
+        distanciaKm: { type: number, nullable: true }
+        creadoEn: { type: string, format: date-time }
+        actualizadoEn: { type: string, format: date-time }
+    EquipoEntrada:
+      type: object
+      required: [nombre, categoria, descripcion, precioDia, lat, lng, direccion]
+      properties:
+        nombre: { type: string, minLength: 3, maxLength: 80 }
+        categoria: { $ref: '#/components/schemas/Categoria' }
+        descripcion: { type: string, minLength: 10, maxLength: 500 }
+        precioDia: { type: number, minimum: 1, maximum: 50000 }
+        lat: { type: number }
+        lng: { type: number }
+        direccion: { type: string, minLength: 5, maxLength: 150 }
+        fotoId: { type: string, nullable: true }
+        visible: { type: boolean }
+    PaginaEquipos:
+      type: object
+      properties:
+        items: { type: array, items: { $ref: '#/components/schemas/Equipo' } }
+        page: { type: integer }
+        size: { type: integer }
+        total: { type: integer }
+    Foto:
+      type: object
+      properties:
+        id: { type: string }
+        url: { type: string }
+        aprobada: { type: boolean }
+        motivos: { type: array, items: { type: string } }
+    SolicitudReserva:
+      type: object
+      required: [equipoId, fechaInicio, fechaFin]
+      properties:
+        equipoId: { type: string }
+        fechaInicio: { type: string, format: date, example: '2026-10-20' }
+        fechaFin: { type: string, format: date, example: '2026-10-22' }
+    Cotizacion:
+      type: object
+      properties:
+        equipoId: { type: string }
+        fechaInicio: { type: string, format: date }
+        fechaFin: { type: string, format: date }
+        disponible: { type: boolean }
+        dias: { type: integer }
+        precioDia: { type: number }
+        subtotal: { type: number }
+        comision: { type: number, description: '12 % descontado al arrendador (RN-03)' }
+        montoArrendador: { type: number }
+        total: { type: number }
+    Reserva:
+      type: object
+      properties:
+        id: { type: string }
+        equipoId: { type: string }
+        equipoNombre: { type: string }
+        equipoFotoUrl: { type: string, nullable: true }
+        arrendatarioId: { type: string }
+        arrendatarioNombre: { type: string }
+        arrendadorId: { type: string }
+        arrendadorNombre: { type: string }
+        fechaInicio: { type: string, format: date }
+        fechaFin: { type: string, format: date }
+        dias: { type: integer }
+        precioDia: { type: number }
+        subtotal: { type: number }
+        comision: { type: number }
+        montoArrendador: { type: number }
+        total: { type: number }
+        penalidad: { type: number }
+        estado: { type: string, enum: [PENDIENTE, CONFIRMADA, EN_CURSO, DEVUELTA, CANCELADA] }
+        canceladaPor: { type: string, nullable: true }
+        devueltaEn: { type: string, format: date-time, nullable: true }
+        creadoEn: { type: string, format: date-time }
+        rolSolicitante: { type: string, enum: [ARRENDADOR, ARRENDATARIO] }
+        resenaEnviada: { type: boolean }
+    PaginaReservas:
+      type: object
+      properties:
+        items: { type: array, items: { $ref: '#/components/schemas/Reserva' } }
+        page: { type: integer }
+        size: { type: integer }
+        total: { type: integer }
+    ResenaEntrada:
+      type: object
+      required: [estrellas, comentario]
+      properties:
+        estrellas: { type: integer, minimum: 1, maximum: 5 }
+        comentario: { type: string, minLength: 3, maxLength: 300 }
+  responses:
+    Error400: { description: Datos no válidos, content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
+    Error401: { description: No autenticado, content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
+    Error403: { description: Sin permiso, content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
+    Error404: { description: No encontrado, content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
+    Error409: { description: Conflicto, content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
+    Error422: { description: Regla de negocio incumplida, content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
+paths:
+  /api/health:
+    get:
+      summary: Estado del servicio
+      responses: { '200': { description: OK } }
+  /api/categorias:
+    get:
+      summary: Categorías disponibles
+      responses: { '200': { description: OK } }
+  /api/empresas/me:
+    get:
+      summary: Perfil de la empresa autenticada
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/Empresa' } } } }
+        '401': { $ref: '#/components/responses/Error401' }
+        '404': { $ref: '#/components/responses/Error404' }
+    put:
+      summary: Registra o actualiza la empresa y verifica el RUC (RN-01)
+      security: [{ bearerAuth: [] }]
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/EmpresaEntrada' } } } }
+      responses:
+        '200': { description: Actualizada, content: { application/json: { schema: { $ref: '#/components/schemas/Empresa' } } } }
+        '201': { description: Creada, content: { application/json: { schema: { $ref: '#/components/schemas/Empresa' } } } }
+        '400': { $ref: '#/components/responses/Error400' }
+        '409': { $ref: '#/components/responses/Error409' }
+  /api/empresas/{id}:
+    get:
+      summary: Perfil público de una empresa
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses:
+        '200': { description: OK }
+        '404': { $ref: '#/components/responses/Error404' }
+  /api/equipos:
+    get:
+      summary: Catálogo público (solo equipos PUBLICADO)
+      parameters:
+        - { name: q, in: query, schema: { type: string } }
+        - { name: categoria, in: query, schema: { $ref: '#/components/schemas/Categoria' } }
+        - { name: lat, in: query, schema: { type: number } }
+        - { name: lng, in: query, schema: { type: number } }
+        - { name: radioKm, in: query, schema: { type: number } }
+        - { name: page, in: query, schema: { type: integer, default: 1 } }
+        - { name: size, in: query, schema: { type: integer, default: 50, maximum: 100 } }
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/PaginaEquipos' } } } }
+        '400': { $ref: '#/components/responses/Error400' }
+    post:
+      summary: Publica un equipo (RN-01, RN-04)
+      security: [{ bearerAuth: [] }]
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/EquipoEntrada' } } } }
+      responses:
+        '201': { description: Creado, content: { application/json: { schema: { $ref: '#/components/schemas/Equipo' } } } }
+        '400': { $ref: '#/components/responses/Error400' }
+        '401': { $ref: '#/components/responses/Error401' }
+        '422': { $ref: '#/components/responses/Error422' }
+  /api/equipos/mios:
+    get:
+      summary: Equipos de la empresa autenticada
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/PaginaEquipos' } } } }
+  /api/equipos/fotos:
+    post:
+      summary: Sube una foto y la valida automáticamente (RN-04, Fase 1 sin ML)
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema: { type: object, properties: { foto: { type: string, format: binary } } }
+      responses:
+        '201': { description: Aprobada, content: { application/json: { schema: { $ref: '#/components/schemas/Foto' } } } }
+        '413': { description: Supera 5 MB }
+        '422': { $ref: '#/components/responses/Error422' }
+  /api/equipos/{id}:
+    parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+    get:
+      summary: Detalle de un equipo
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/Equipo' } } } }
+        '404': { $ref: '#/components/responses/Error404' }
+    put:
+      summary: Actualiza un equipo propio (campos parciales)
+      security: [{ bearerAuth: [] }]
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/EquipoEntrada' } } } }
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/Equipo' } } } }
+        '403': { $ref: '#/components/responses/Error403' }
+        '404': { $ref: '#/components/responses/Error404' }
+    delete:
+      summary: Elimina un equipo propio sin reservas activas
+      security: [{ bearerAuth: [] }]
+      responses:
+        '204': { description: Eliminado }
+        '403': { $ref: '#/components/responses/Error403' }
+        '409': { $ref: '#/components/responses/Error409' }
+  /api/equipos/{id}/disponibilidad:
+    get:
+      summary: Rangos de fechas ocupados (RN-02)
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { '200': { description: OK } }
+  /api/equipos/{id}/resenas:
+    get:
+      summary: Reseñas del equipo
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { '200': { description: OK } }
+  /api/reservas/cotizacion:
+    post:
+      summary: Calcula días, subtotal y comisión sin crear la reserva
+      security: [{ bearerAuth: [] }]
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/SolicitudReserva' } } } }
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/Cotizacion' } } } }
+        '422': { $ref: '#/components/responses/Error422' }
+  /api/reservas:
+    post:
+      summary: Crea una reserva (RN-01, RN-02, RN-03, RN-07)
+      security: [{ bearerAuth: [] }]
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/SolicitudReserva' } } } }
+      responses:
+        '201': { description: Creada, content: { application/json: { schema: { $ref: '#/components/schemas/Reserva' } } } }
+        '409': { $ref: '#/components/responses/Error409' }
+        '422': { $ref: '#/components/responses/Error422' }
+  /api/reservas/mias:
+    get:
+      summary: Reservas de la empresa como arrendataria o arrendadora
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: rol, in: query, schema: { type: string, enum: [arrendatario, arrendador] } }]
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/PaginaReservas' } } } }
+  /api/reservas/{id}:
+    get:
+      summary: Detalle de una reserva (solo participantes)
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/Reserva' } } } }
+        '403': { $ref: '#/components/responses/Error403' }
+  /api/reservas/{id}/cancelar:
+    patch:
+      summary: Cancela una reserva; aplica 20 % de penalidad si faltan menos de 12 h (RN-08)
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/Reserva' } } } }
+        '422': { $ref: '#/components/responses/Error422' }
+  /api/reservas/{id}/estado:
+    patch:
+      summary: El arrendador avanza el estado (PENDIENTE→CONFIRMADA→EN_CURSO→DEVUELTA)
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object, properties: { estado: { type: string, enum: [CONFIRMADA, EN_CURSO, DEVUELTA] } } }
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/Reserva' } } } }
+        '403': { $ref: '#/components/responses/Error403' }
+        '422': { $ref: '#/components/responses/Error422' }
+  /api/reservas/{id}/resenas:
+    post:
+      summary: Califica la transacción dentro de las 48 h posteriores a la devolución (RN-05, RN-06)
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/ResenaEntrada' } } } }
+      responses:
+        '201': { description: Creada }
+        '409': { $ref: '#/components/responses/Error409' }
+        '422': { $ref: '#/components/responses/Error422' }

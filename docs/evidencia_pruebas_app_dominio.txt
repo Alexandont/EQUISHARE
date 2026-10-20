@@ -1,0 +1,17 @@
+ok   ReglasNegocioTest.anticipacion_exige24HorasAntesDeLaEntrega
+ok   ReglasNegocioTest.codigosHttp_seTraducenATiposDeError
+ok   ReglasNegocioTest.cotizacion_aplicaComisionDel12PorCientoAlArrendador
+ok   ReglasNegocioTest.distancia_TrujilloHuanchaco
+ok   ReglasNegocioTest.formato_monedaYFechas
+ok   ReglasNegocioTest.penalidad_soloSiFaltanMenosDe12Horas
+ok   ReglasNegocioTest.solapamiento_consideraDiasIncluidos
+ok   ReglasNegocioTest.validarRango_detectaFinAnteriorYExcesoDeDias
+ok   ReglasNegocioTest.ventanaResena_de48Horas
+ok   ValidadoresTest.email_y_password
+ok   ValidadoresTest.precio_aceptaComaYRango
+ok   ValidadoresTest.ruc_invalido
+ok   ValidadoresTest.ruc_validoConDigitoVerificador
+ok   ValidadoresTest.telefono_celularPeruano
+ok   ValidadoresTest.textosDeEquipo
+ok   ValidadoresTest.urlServidor_seNormaliza
+== 16 pasaron, 0 fallaron
