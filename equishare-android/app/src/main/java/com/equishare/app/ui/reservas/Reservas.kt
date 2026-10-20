@@ -129,7 +129,7 @@ class ReservasViewModel(
         }
     }
 
-    /** Penalidad que se cobraría si se cancela ahora (RN-08), para avisar antes de confirmar. */
+    /** Penalidad que se cobraría si se cancela ahora, para avisar antes de confirmar. */
     fun penalidadSiCancela(reserva: Reserva): Double =
         ReglasNegocio.penalidadSiCancela(LocalDate.parse(reserva.fechaInicio), reserva.total, reloj())
 
@@ -225,7 +225,7 @@ fun ReservasScreen(viewModel: ReservasViewModel = viewModel(factory = AppViewMod
             text = {
                 Text(
                     if (penalidad > 0) {
-                        "Faltan menos de 12 horas para la entrega: se aplicará una penalidad de ${Formato.soles(penalidad)} (20 %, RN-08)."
+                        "Faltan menos de 12 horas para la entrega: se aplicará una penalidad de ${Formato.soles(penalidad)} (20 %)."
                     } else {
                         "Aún estás a tiempo: la cancelación no tiene costo."
                     },
@@ -320,7 +320,7 @@ private fun DialogoCalificar(titulo: String, alCerrar: () -> Unit, alEnviar: (In
         title = { Text(titulo) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("Tienes 48 horas después de la devolución para calificar (RN-05).", style = MaterialTheme.typography.bodySmall)
+                Text("Tienes 48 horas después de la devolución para calificar.", style = MaterialTheme.typography.bodySmall)
                 SelectorEstrellas(estrellas) { estrellas = it; error = null }
                 OutlinedTextField(
                     value = comentario,

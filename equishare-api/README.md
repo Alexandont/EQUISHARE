@@ -12,7 +12,7 @@ npm run seed  # reinicia los datos de demostración
 * Contrato JSON: `docs/openapi.yaml`.
 * Errores siempre con el formato `{ "error": { "codigo", "mensaje", "detalles" } }` y códigos HTTP 400, 401, 403, 404, 409, 413, 422 y 500.
 * Autenticación: `Authorization: Bearer <ID token de Firebase>`. Sin `FIREBASE_PROJECT_ID` en `.env` funciona en modo demostración con `Bearer demo:<uid>`.
-* Reglas de negocio: `src/domain/reglas.js` (RN-02, RN-03, RN-05 a RN-08) y `src/domain/ruc.js` (RN-01). Validación automática de fotos (RN-04, fase 1 sin ML): `src/services/validacionFoto.js`.
+* Reglas de negocio: `src/domain/reglas.js` (RN-02, RN-03, RN-05 a RN-08) y `src/domain/ruc.js` (RN-01). Validación automática de fotos (RN-04): `src/services/validacionFoto.js`.
 
 | Método | Ruta | Descripción |
 |---|---|---|

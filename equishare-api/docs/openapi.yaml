@@ -226,7 +226,7 @@ paths:
         '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/PaginaEquipos' } } } }
   /api/equipos/fotos:
     post:
-      summary: Sube una foto y la valida automáticamente (RN-04, Fase 1 sin ML)
+      summary: Sube una foto y la valida automáticamente (RN-04)
       security: [{ bearerAuth: [] }]
       requestBody:
         required: true

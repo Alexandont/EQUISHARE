@@ -86,7 +86,7 @@ class DetalleViewModel(
         }
     }
 
-    /** Primer día que el selector permite elegir (RN-07). */
+    /** Primer día que el selector permite elegir. */
     fun primerDiaReservable(): LocalDate = ReglasNegocio.primerDiaReservable(reloj())
 
     fun estaOcupado(dia: LocalDate): Boolean =
@@ -99,7 +99,7 @@ class DetalleViewModel(
         val equipo = _ui.value.equipo ?: return
         val error = ReglasNegocio.validarRango(inicio, fin, reloj())
             ?: if (ReglasNegocio.haySolapamiento(_ui.value.ocupados, inicio, fin)) {
-                "El rango elegido incluye días ya reservados (RN-02). Elige otras fechas."
+                "El rango elegido incluye días ya reservados. Elige otras fechas."
             } else {
                 null
             }

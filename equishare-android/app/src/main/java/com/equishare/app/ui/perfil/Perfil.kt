@@ -139,16 +139,15 @@ fun PerfilScreen(
             }
             Card(Modifier.fillMaxWidth()) {
                 Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                    Text("Información técnica", style = MaterialTheme.typography.titleSmall)
-                    Text("Autenticación: " + if (ui.esDemo) "modo demostración (sin Firebase)" else "Firebase Authentication", style = MaterialTheme.typography.bodySmall)
-                    Text("Google Maps: " + if (BuildConfig.MAPS_ENABLED) "configurado" else "sin API key", style = MaterialTheme.typography.bodySmall)
-                    Text("Versión: ${BuildConfig.VERSION_NAME}", style = MaterialTheme.typography.bodySmall)
+                    Text("Acerca de EQUISHARE", style = MaterialTheme.typography.titleSmall)
+                    Text("Alquiler y préstamo de equipos entre empresas de Trujillo.", style = MaterialTheme.typography.bodySmall)
+                    Text("Versión ${BuildConfig.VERSION_NAME}", style = MaterialTheme.typography.bodySmall)
                 }
             }
             OutlinedButton(onClick = { mostrarServidor = true }, modifier = Modifier.fillMaxWidth()) {
                 Icon(Icons.Filled.Dns, contentDescription = null)
                 Spacer(Modifier.width(8.dp))
-                Text("Servidor de la API")
+                Text("Conexión con el servidor")
             }
             OutlinedButton(onClick = alVerPrivacidad, modifier = Modifier.fillMaxWidth()) {
                 Icon(Icons.Filled.PrivacyTip, contentDescription = null)

@@ -40,7 +40,7 @@ export function rutasReservas({ store, autenticar, reloj }) {
     res.json({ equipoId, fechaInicio, fechaFin, disponible, ...cotizar(equipo.precioDia, fechaInicio, fechaFin) });
   });
 
-  // POST /api/reservas -> crear (RN-01, RN-02, RN-03, RN-07)
+  // POST /api/reservas -> crear
   r.post('/', autenticar, verificada, (req, res) => {
     const { equipoId, fechaInicio, fechaFin } = req.body ?? {};
     if (typeof equipoId !== 'string' || !equipoId) {
@@ -93,7 +93,7 @@ export function rutasReservas({ store, autenticar, reloj }) {
     res.json(reservaDto(req, store, reservaParticipante(req), req.usuario.uid));
   });
 
-  // PATCH /api/reservas/:id/cancelar (RN-08)
+  // PATCH /api/reservas/:id/cancelar
   r.patch('/:id/cancelar', autenticar, (req, res) => {
     const reserva = reservaParticipante(req);
     if (!['PENDIENTE', 'CONFIRMADA'].includes(reserva.estado)) {
@@ -129,7 +129,7 @@ export function rutasReservas({ store, autenticar, reloj }) {
     res.json(reservaDto(req, store, store.obtener('reservas', reserva.id), req.usuario.uid));
   });
 
-  // POST /api/reservas/:id/resenas (RN-05 y RN-06)
+  // POST /api/reservas/:id/resenas
   r.post('/:id/resenas', autenticar, (req, res) => {
     const reserva = reservaParticipante(req);
     const ventana = verificarVentanaResena(reserva, reloj());

@@ -57,7 +57,7 @@ data class CompletarPerfilUiState(
     val errorGeneral: String? = null,
 )
 
-/** RN-01: la empresa registra y verifica su RUC antes de publicar o alquilar. */
+/** La empresa registra y verifica su RUC antes de publicar o alquilar. */
 class CompletarPerfilViewModel(
     private val empresas: EmpresaRepository,
     private val favoritos: FavoritosRepository,
@@ -118,8 +118,8 @@ fun CompletarPerfilScreen(
         Text("Registra tu empresa", style = MaterialTheme.typography.headlineSmall)
         Card {
             Text(
-                "Para publicar o alquilar equipos debes registrar el RUC de tu empresa (regla RN-01). " +
-                    "Verificamos que el número sea válido; la consulta en línea al padrón de SUNAT se agregará en una fase futura.",
+                "Para publicar o alquilar equipos debes registrar el RUC de tu empresa. " +
+                    "Antes de continuar verificamos que el número de RUC sea válido.",
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(12.dp),
             )

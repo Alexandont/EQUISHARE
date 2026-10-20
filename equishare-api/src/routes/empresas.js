@@ -7,7 +7,7 @@ import { empresaDto } from './mapeo.js';
 export function rutasEmpresas({ store, autenticar, reloj }) {
   const r = Router();
 
-  // RN-01: registro de la empresa con verificación del RUC.
+  // Registro de la empresa con verificación del RUC.
   r.put('/me', autenticar, (req, res) => {
     const { errores: lista, datos } = validarEmpresa(req.body);
     const ruc = String(req.body?.ruc ?? '').trim();
@@ -58,7 +58,7 @@ export function rutasEmpresas({ store, autenticar, reloj }) {
   return r;
 }
 
-/** Middleware RN-01: la empresa debe existir y tener el RUC verificado. */
+/** Middleware: la empresa debe existir y tener el RUC verificado. */
 export function requiereEmpresaVerificada(store) {
   return (req, _res, next) => {
     const empresa = store.obtener('empresas', req.usuario.uid);

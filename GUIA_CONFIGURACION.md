@@ -88,7 +88,7 @@ Sin la clave la app funciona igual y la pestaña *Mapa* muestra una lista de ubi
 2. Inicia el servidor (paso 2).
 3. Pulsa **Run ▶** con un emulador.
    * Emulador: la app ya apunta a `http://10.0.2.2:3000/`.
-   * Celular físico: conecta el celular y la PC a la **misma red Wi-Fi**; en la app ve a *Configurar servidor* (pantalla de inicio de sesión o *Perfil > Servidor de la API*) y escribe la IP que mostró la consola, por ejemplo `http://192.168.1.50:3000/`. Si no conecta, permite Node.js en el firewall de Windows.
+   * Celular físico: conecta el celular y la PC a la **misma red Wi-Fi**; en la app ve a *Ajustes de conexión* (pantalla de inicio de sesión) o *Perfil > Conexión con el servidor* y escribe la IP que mostró la consola, por ejemplo `http://192.168.1.50:3000/`. Si no conecta, permite Node.js en el firewall de Windows.
 4. Para que el emulador tenga fotos que elegir, arrastra imágenes JPG/PNG a la ventana del emulador (se guardan en Descargas).
 5. Pruebas unitarias de la app: clic derecho en `app/src/test` → **Run 'Tests in test'**, o `./gradlew testDebugUnitTest`.
 
@@ -124,7 +124,7 @@ Con **Firebase activo** las empresas demo no tienen cuenta en Firebase, así que
 
 | Problema | Solución |
 |---|---|
-| "No se pudo conectar con el servidor" | Verifica que `npm start` esté corriendo y la dirección en *Configurar servidor* (emulador: `http://10.0.2.2:3000/`). |
+| "No se pudo conectar con el servidor" | Verifica que `npm start` esté corriendo y la dirección en *Ajustes de conexión* (emulador: `http://10.0.2.2:3000/`). |
 | `Unresolved reference: BuildConfig` | *Build > Rebuild Project* (se genera al compilar). |
 | El mapa sale gris | Falta `MAPS_API_KEY`, la API no está habilitada o el SHA-1 no coincide. |
 | "Correo o contraseña incorrectos" con Firebase | La cuenta debe crearse primero con *¿Tu empresa es nueva? Crea una cuenta*. |

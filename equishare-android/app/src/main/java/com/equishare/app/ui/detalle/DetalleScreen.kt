@@ -254,7 +254,7 @@ private fun ContenidoDetalle(equipo: Equipo, ui: DetalleUiState, modifier: Modif
         item {
             Card(modifier = Modifier.fillMaxWidth()) {
                 Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                    Text("Disponibilidad real (RN-02)", style = MaterialTheme.typography.titleSmall)
+                    Text("Disponibilidad", style = MaterialTheme.typography.titleSmall)
                     if (ui.ocupados.isEmpty()) {
                         Text("No tiene reservas activas. Todas las fechas futuras están libres.", style = MaterialTheme.typography.bodySmall)
                     } else {
@@ -262,7 +262,7 @@ private fun ContenidoDetalle(equipo: Equipo, ui: DetalleUiState, modifier: Modif
                         ui.ocupados.forEach { Text("• ${Formato.rango(it.fechaInicio, it.fechaFin)}", style = MaterialTheme.typography.bodySmall) }
                     }
                     Text(
-                        "Entrega a las 08:00 del primer día. Reserva con al menos 24 horas de anticipación (RN-07).",
+                        "Entrega a las 08:00 del primer día. Reserva con al menos 24 horas de anticipación.",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -324,11 +324,11 @@ private fun DialogoCotizacion(
                 FilaMonto("Total a pagar", Formato.soles(cotizacion.total), destacado = true)
                 Text(
                     "Sin cargos adicionales ni servicios preseleccionados. La comisión de EQUISHARE (12 % = " +
-                        "${Formato.soles(cotizacion.comision)}) la paga la empresa arrendadora (RN-03).",
+                        "${Formato.soles(cotizacion.comision)}) la paga la empresa arrendadora.",
                     style = MaterialTheme.typography.bodySmall,
                 )
                 Text(
-                    "Puedes cancelar sin costo hasta 12 horas antes de la entrega; después se cobra el 20 % (RN-08).",
+                    "Puedes cancelar sin costo hasta 12 horas antes de la entrega; después se cobra el 20 %.",
                     style = MaterialTheme.typography.bodySmall,
                 )
                 if (cargando) CircularProgressIndicator(modifier = Modifier.size(24.dp))

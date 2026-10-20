@@ -19,11 +19,11 @@ import kotlin.math.sqrt
  * y mostrar al usuario el desglose de costos. El servidor vuelve a validarlas (fuente de verdad).
  */
 object ReglasNegocio {
-    const val COMISION_PLATAFORMA = 0.12 // RN-03
-    const val PENALIDAD_CANCELACION = 0.20 // RN-08
-    const val ANTICIPACION_MINIMA_HORAS = 24L // RN-07
-    const val LIMITE_CANCELACION_HORAS = 12L // RN-08
-    const val VENTANA_RESENA_HORAS = 48L // RN-05
+    const val COMISION_PLATAFORMA = 0.12
+    const val PENALIDAD_CANCELACION = 0.20
+    const val ANTICIPACION_MINIMA_HORAS = 24L
+    const val LIMITE_CANCELACION_HORAS = 12L
+    const val VENTANA_RESENA_HORAS = 48L
     const val MAX_DIAS_RESERVA = 90
 
     val ZONA_LIMA: ZoneOffset = ZoneOffset.ofHours(-5)
@@ -37,7 +37,7 @@ object ReglasNegocio {
 
     fun hoyEnLima(ahora: Instant): LocalDate = ahora.atOffset(ZONA_LIMA).toLocalDate()
 
-    /** Primer día que se puede elegir como inicio cumpliendo RN-07. */
+    /** Primer día que se puede elegir como inicio cumpliendo la anticipación mínima. */
     fun primerDiaReservable(ahora: Instant): LocalDate {
         var dia = hoyEnLima(ahora)
         while (!cumpleAnticipacion(dia, ahora)) dia = dia.plusDays(1)
@@ -47,7 +47,7 @@ object ReglasNegocio {
     fun diasAlquiler(inicio: LocalDate, fin: LocalDate): Int =
         (ChronoUnit.DAYS.between(inicio, fin) + 1).toInt()
 
-    /** RN-03: el arrendatario paga el subtotal; la comisión del 12 % se descuenta al arrendador. */
+    /** El arrendatario paga el subtotal; la comisión del 12 % se descuenta al arrendador. */
     fun cotizar(precioDia: Double, inicio: LocalDate, fin: LocalDate, disponible: Boolean = true): Cotizacion {
         val dias = diasAlquiler(inicio, fin)
         val subtotal = redondear2(precioDia * dias)
@@ -76,7 +76,7 @@ object ReglasNegocio {
         return null
     }
 
-    /** RN-02: dos rangos (días incluidos) se cruzan si a.inicio <= b.fin y b.inicio <= a.fin. */
+    /** Dos rangos (días incluidos) se cruzan si a.inicio <= b.fin y b.inicio <= a.fin. */
     fun haySolapamiento(ocupados: List<RangoOcupado>, inicio: LocalDate, fin: LocalDate): Boolean =
         ocupados.any { rango ->
             val a = LocalDate.parse(rango.fechaInicio)
@@ -84,13 +84,13 @@ object ReglasNegocio {
             !a.isAfter(fin) && !inicio.isAfter(b)
         }
 
-    /** RN-08: penalidad que se aplicaría si se cancela en este momento. */
+    /** Penalidad que se aplicaría si se cancela en este momento. */
     fun penalidadSiCancela(fechaInicio: LocalDate, total: Double, ahora: Instant): Double {
         val minutos = Duration.between(ahora, instanteInicio(fechaInicio)).toMinutes()
         return if (minutos < LIMITE_CANCELACION_HORAS * 60) redondear2(total * PENALIDAD_CANCELACION) else 0.0
     }
 
-    /** RN-05: se puede calificar dentro de las 48 horas posteriores a la devolución. */
+    /** Se puede calificar dentro de las 48 horas posteriores a la devolución. */
     fun dentroDeVentanaResena(devueltaEn: Instant?, ahora: Instant): Boolean {
         if (devueltaEn == null) return false
         val horas = Duration.between(devueltaEn, ahora).toMinutes() / 60.0

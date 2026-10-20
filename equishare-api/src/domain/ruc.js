@@ -1,5 +1,5 @@
 // Validación estructural del RUC peruano (11 dígitos, prefijo válido y dígito verificador
-// módulo 11). La consulta en línea al padrón de SUNAT queda como fase futura.
+// módulo 11).
 const PESOS = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
 const PREFIJOS_VALIDOS = ['10', '15', '16', '17', '20'];
 

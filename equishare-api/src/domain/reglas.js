@@ -1,11 +1,11 @@
-// Reglas de negocio RN-02, RN-03, RN-05, RN-06, RN-07 y RN-08 de EQUISHARE.
-export const COMISION_PLATAFORMA = 0.12; // RN-03
-export const PENALIDAD_CANCELACION = 0.2; // RN-08
-export const ANTICIPACION_MINIMA_HORAS = 24; // RN-07
-export const LIMITE_CANCELACION_HORAS = 12; // RN-08
-export const VENTANA_RESENA_HORAS = 48; // RN-05
-export const UMBRAL_REVISION = 3.0; // RN-06
-export const MIN_RESENAS_REVISION = 5; // RN-06
+// Reglas de negocio de EQUISHARE.
+export const COMISION_PLATAFORMA = 0.12;
+export const PENALIDAD_CANCELACION = 0.2;
+export const ANTICIPACION_MINIMA_HORAS = 24;
+export const LIMITE_CANCELACION_HORAS = 12;
+export const VENTANA_RESENA_HORAS = 48;
+export const UMBRAL_REVISION = 3.0;
+export const MIN_RESENAS_REVISION = 5;
 export const MAX_DIAS_RESERVA = 90;
 export const HORA_ENTREGA = '08:00:00';
 export const OFFSET_LIMA = '-05:00'; // Perú no aplica horario de verano
@@ -37,7 +37,7 @@ export function diasAlquiler(fechaInicio, fechaFin) {
   return Math.round((b - a) / MS_DIA) + 1;
 }
 
-/** RN-03: la comisión (12 %) se descuenta al arrendador; el arrendatario paga el subtotal. */
+/** La comisión (12 %) se descuenta al arrendador; el arrendatario paga el subtotal. */
 export function cotizar(precioDia, fechaInicio, fechaFin) {
   const dias = diasAlquiler(fechaInicio, fechaFin);
   const subtotal = redondear2(precioDia * dias);
@@ -52,7 +52,7 @@ export function cotizar(precioDia, fechaInicio, fechaFin) {
   };
 }
 
-/** Devuelve la lista de errores de las fechas; vacía si son válidas (incluye RN-07). */
+/** Devuelve la lista de errores de las fechas; vacía si son válidas (incluye la anticipación mínima). */
 export function validarFechasReserva(fechaInicio, fechaFin, ahora = new Date()) {
   const errores = [];
   if (!esFechaIso(fechaInicio)) errores.push('fechaInicio debe tener formato AAAA-MM-DD.');
@@ -70,7 +70,7 @@ export function validarFechasReserva(fechaInicio, fechaFin, ahora = new Date()) 
   return errores;
 }
 
-/** RN-02: dos rangos de días (incluidos) se cruzan si a.inicio <= b.fin y b.inicio <= a.fin. */
+/** Dos rangos de días (incluidos) se cruzan si a.inicio <= b.fin y b.inicio <= a.fin. */
 export function seSolapan(inicioA, finA, inicioB, finB) {
   return inicioA <= finB && inicioB <= finA;
 }
@@ -84,7 +84,7 @@ export function haySolapamiento(reservasEquipo, fechaInicio, fechaFin, excluirId
   );
 }
 
-/** RN-08: penalidad del 20 % si se cancela con menos de 12 horas de anticipación. */
+/** Penalidad del 20 % si se cancela con menos de 12 horas de anticipación. */
 export function calcularPenalidad(reserva, ahora = new Date()) {
   const horas = (instanteInicio(reserva.fechaInicio).getTime() - ahora.getTime()) / MS_HORA;
   if (horas < LIMITE_CANCELACION_HORAS) {
@@ -93,7 +93,7 @@ export function calcularPenalidad(reserva, ahora = new Date()) {
   return 0;
 }
 
-/** RN-05: solo se califica una reserva devuelta y dentro de las 48 horas siguientes. */
+/** Solo se califica una reserva devuelta y dentro de las 48 horas siguientes. */
 export function verificarVentanaResena(reserva, ahora = new Date()) {
   if (reserva.estado !== 'DEVUELTA' || !reserva.devueltaEn) {
     return { permitido: false, motivo: 'Solo se puede calificar una reserva cuyo equipo ya fue devuelto.' };
@@ -105,7 +105,7 @@ export function verificarVentanaResena(reserva, ahora = new Date()) {
   return { permitido: true, motivo: null };
 }
 
-/** RN-06: revisión automática si el promedio es menor a 3.0 tras al menos 5 reseñas. */
+/** Revisión automática si el promedio es menor a 3.0 tras al menos 5 reseñas. */
 export function requiereRevision(promedio, totalResenas) {
   return totalResenas >= MIN_RESENAS_REVISION && promedio < UMBRAL_REVISION;
 }

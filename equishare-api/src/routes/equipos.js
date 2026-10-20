@@ -69,7 +69,7 @@ export function rutasEquipos({ store, autenticar, reloj, carpetaUploads }) {
     res.json({ items, page: 1, size: items.length, total: items.length });
   });
 
-  // POST /api/equipos/fotos -> subida y validación automática de la foto (RN-04)
+  // POST /api/equipos/fotos -> subida y validación automática de la foto
   r.post('/fotos', autenticar, verificada, (req, res, next) => {
     subida.single('foto')(req, res, (err) => {
       if (err instanceof multer.MulterError && err.code === 'LIMIT_FILE_SIZE') {
@@ -111,7 +111,7 @@ export function rutasEquipos({ store, autenticar, reloj, carpetaUploads }) {
     res.json(equipoDto(req, store, equipo));
   });
 
-  // GET /api/equipos/:id/disponibilidad -> rangos ocupados (RN-02)
+  // GET /api/equipos/:id/disponibilidad -> rangos ocupados
   r.get('/:id/disponibilidad', (req, res) => {
     const equipo = store.obtener('equipos', req.params.id);
     if (!equipo) throw errores.noEncontrado('El equipo');
@@ -152,7 +152,7 @@ export function rutasEquipos({ store, autenticar, reloj, carpetaUploads }) {
       empresaId: req.usuario.uid,
       ...datos,
       fotoId: datos.fotoId ?? null,
-      // RN-04: sin foto aprobada el equipo no es visible en el catálogo.
+      // Sin foto aprobada el equipo no es visible en el catálogo.
       estado: !datos.fotoId ? 'PENDIENTE_FOTO' : visible ? 'PUBLICADO' : 'OCULTO',
       calificacionPromedio: 0,
       totalResenas: 0,
@@ -173,7 +173,7 @@ export function rutasEquipos({ store, autenticar, reloj, carpetaUploads }) {
     const visible = datos.visible ?? equipo.estado !== 'OCULTO';
     delete datos.visible;
     let estado;
-    if (equipo.estado === 'EN_REVISION') estado = 'EN_REVISION'; // RN-06: solo el administrador lo libera
+    if (equipo.estado === 'EN_REVISION') estado = 'EN_REVISION'; // Solo el administrador lo libera
     else if (!fotoFinal) estado = 'PENDIENTE_FOTO';
     else estado = visible ? 'PUBLICADO' : 'OCULTO';
 

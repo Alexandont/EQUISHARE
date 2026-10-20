@@ -119,7 +119,7 @@ private fun PantallaSinServidor(
         Text(mensaje, textAlign = TextAlign.Center)
         Spacer(Modifier.height(24.dp))
         Button(onClick = alReintentar) { Text("Reintentar") }
-        OutlinedButton(onClick = { mostrarServidor = true }) { Text("Configurar servidor") }
+        OutlinedButton(onClick = { mostrarServidor = true }) { Text("Ajustes de conexión") }
         TextButton(onClick = alContinuar) { Text("Usar datos guardados (sin conexión)") }
         TextButton(onClick = alCerrarSesion) { Text("Cerrar sesión") }
     }

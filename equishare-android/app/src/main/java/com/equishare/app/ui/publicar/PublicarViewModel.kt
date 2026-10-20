@@ -144,7 +144,7 @@ class PublicarViewModel(
                 when (val subida = equipos.subirFoto(uriLocal)) {
                     is Resultado.Exito -> fotoId = subida.datos.id
                     is Resultado.Error -> {
-                        // RN-04: la foto rechazada explica el motivo y no se publica.
+                        // La foto rechazada explica el motivo y no se publica.
                         _ui.update {
                             it.copy(
                                 guardando = false,
@@ -172,8 +172,8 @@ class PublicarViewModel(
             when (resultado) {
                 is Resultado.Exito -> {
                     val aviso = when (resultado.datos.estado) {
-                        EstadoEquipo.PENDIENTE_FOTO -> "Guardado. Agrega una foto aprobada para que aparezca en el catálogo (RN-04)."
-                        EstadoEquipo.EN_REVISION -> "Guardado. El equipo sigue en revisión por calificaciones bajas (RN-06)."
+                        EstadoEquipo.PENDIENTE_FOTO -> "Guardado. Agrega una foto aprobada para que aparezca en el catálogo."
+                        EstadoEquipo.EN_REVISION -> "Guardado. El equipo sigue en revisión por calificaciones bajas."
                         EstadoEquipo.OCULTO -> "Guardado como oculto."
                         EstadoEquipo.PUBLICADO -> "¡Equipo publicado en el catálogo!"
                     }

@@ -27,7 +27,7 @@ sealed interface EstadoRaiz {
 }
 
 /**
- * Decide qué mostrar al abrir la app: login, registro de empresa (RN-01) o la app principal.
+ * Decide qué mostrar al abrir la app: login, registro de empresa o la app principal.
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 class RaizViewModel(

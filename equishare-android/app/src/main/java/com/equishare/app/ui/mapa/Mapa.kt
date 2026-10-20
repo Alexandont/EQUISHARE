@@ -168,21 +168,20 @@ fun MapaScreen(
     }
 }
 
-/** Alternativa cuando no se configuró MAPS_API_KEY: lista con coordenadas y aviso de configuración. */
+/** Alternativa cuando el mapa no está disponible: lista de equipos con su dirección. */
 @Composable
 private fun SinClaveMaps(equipos: List<Equipo>, alAbrirEquipo: (String) -> Unit) {
     Column(Modifier.fillMaxSize().padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer)) {
             Text(
-                "Google Maps no está configurado. Agrega MAPS_API_KEY en local.properties (ver GUIA_CONFIGURACION.md) " +
-                    "y vuelve a compilar. Mientras tanto se listan las ubicaciones:",
+                "El mapa no está disponible en este momento. Estas son las ubicaciones de los equipos:",
                 modifier = Modifier.padding(12.dp),
                 style = MaterialTheme.typography.bodySmall,
             )
         }
         equipos.take(20).forEach { e ->
             TextButton(onClick = { alAbrirEquipo(e.id) }, modifier = Modifier.fillMaxWidth()) {
-                Text("${e.nombre} — ${e.direccion} (${"%.4f".format(e.lat)}, ${"%.4f".format(e.lng)})")
+                Text("${e.nombre} · ${e.direccion}")
             }
         }
     }

@@ -84,7 +84,7 @@ fun LoginScreen(
         if (ui.esModoDemo) {
             Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer)) {
                 Text(
-                    "Modo demostración (sin Firebase). Ingresa con constructora@demo.pe, eventos@demo.pe o " +
+                    "Modo demostración. Ingresa con constructora@demo.pe, eventos@demo.pe o " +
                         "taller@demo.pe y cualquier contraseña de 8 caracteres con letras y números.",
                     modifier = Modifier.padding(12.dp),
                     style = MaterialTheme.typography.bodySmall,
@@ -171,7 +171,7 @@ fun LoginScreen(
         TextButton(onClick = viewModel::alternarModo) {
             Text(if (ui.modoRegistro) "¿Ya tienes cuenta? Inicia sesión" else "¿Tu empresa es nueva? Crea una cuenta")
         }
-        TextButton(onClick = { mostrarServidor = true }) { Text("Configurar servidor") }
+        TextButton(onClick = { mostrarServidor = true }) { Text("Ajustes de conexión") }
     }
 
     if (mostrarServidor) DialogoServidor(alCerrar = { mostrarServidor = false })

@@ -131,7 +131,7 @@ fun PublicarScreen(
         ) {
             ui.estadoActual?.let { EtiquetaEstadoEquipo(it) }
 
-            // ---- Foto (RN-04) ----
+            // ---- Foto ----
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -171,8 +171,7 @@ fun PublicarScreen(
                 Text(if (ui.fotoUriLocal != null || ui.fotoUrlRemota != null) "Cambiar foto" else "Elegir foto")
             }
             Text(
-                "La foto se valida automáticamente al guardar: JPG, PNG o WebP, mínimo 640×480 px y máximo 5 MB. " +
-                    "La validación con Machine Learning se incorporará en una fase futura.",
+                "La foto se valida automáticamente al guardar: JPG, PNG o WebP, mínimo 640×480 px y máximo 5 MB.",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )

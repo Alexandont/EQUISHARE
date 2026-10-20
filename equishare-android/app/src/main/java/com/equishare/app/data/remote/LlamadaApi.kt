@@ -27,7 +27,7 @@ suspend fun <T> llamarApi(bloque: suspend () -> T): Resultado<T> = try {
 } catch (e: IOException) {
     Resultado.Error(ErrorApp(TipoError.SIN_CONEXION))
 } catch (e: IllegalArgumentException) {
-    Resultado.Error(ErrorApp(TipoError.DESCONOCIDO, "La dirección del servidor no es válida. Revísala en Perfil > Servidor."))
+    Resultado.Error(ErrorApp(TipoError.DESCONOCIDO, "La dirección del servidor no es válida. Revísala en Perfil > Conexión con el servidor."))
 } catch (e: Exception) {
     Resultado.Error(ErrorApp(TipoError.DESCONOCIDO, e.message ?: TipoError.mensajePorDefecto(TipoError.DESCONOCIDO)))
 }

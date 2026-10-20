@@ -1,6 +1,5 @@
-// Validación automática de fotos (Fase 1, RN-04). Sustituye por ahora al modelo de Machine
-// Learning, que queda como fase futura. Cada rechazo devuelve un motivo explícito para que la
-// empresa sepa qué corregir (principio de transparencia del Anexo de marketing ético).
+// Validación automática de fotos. Cada rechazo devuelve un motivo explícito para que la
+// empresa sepa qué corregir.
 import { imageSize } from 'image-size';
 
 export const TAMANO_MAX_BYTES = 5 * 1024 * 1024;
