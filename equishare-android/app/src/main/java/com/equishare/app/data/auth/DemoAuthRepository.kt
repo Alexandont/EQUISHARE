@@ -8,6 +8,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 /**
@@ -39,9 +40,13 @@ class DemoAuthRepository(
     }
 
     override suspend fun iniciarSesion(email: String, password: String): Resultado<Sesion> {
+        // Esperar la restauración evita que su primera emisión (null) borre el nuevo login.
+        sesionCargada.first { it }
         val sesion = Sesion(uid = uidDesdeEmail(email), email = email.trim().lowercase(), esDemo = true)
-        _sesion.value = sesion
         ajustes.guardarSesionDemo(sesion)
+        // El colector es la única fuente de sesión; publicar antes de guardar permitía
+        // consultar /empresas/me sin token al llegar una emisión anterior de DataStore.
+        this.sesion.first { it == sesion }
         return Resultado.Exito(sesion)
     }
 
@@ -49,8 +54,9 @@ class DemoAuthRepository(
         iniciarSesion(email, password)
 
     override suspend fun cerrarSesion() {
-        _sesion.value = null
+        sesionCargada.first { it }
         ajustes.guardarSesionDemo(null)
+        sesion.first { it == null }
     }
 
     override fun tokenParaApi(): String? = _sesion.value?.let { "demo:${it.uid}" }

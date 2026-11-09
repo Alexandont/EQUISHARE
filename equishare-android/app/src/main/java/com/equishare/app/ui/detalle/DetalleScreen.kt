@@ -164,10 +164,12 @@ fun DetalleScreen(
     }
 
     if (mostrarCalendario) {
-        val primerDia = viewModel.primerDiaReservable()
+        val primerDia = viewModel.primerDiaSeleccionable()
         val ocupados = ui.ocupados
         val estadoFechas = rememberDateRangePickerState(
             selectableDates = object : SelectableDates {
+                // Se bloquean los días pasados y los ya reservados (RN-02). La anticipación mínima
+                // de 24 h (RN-07) se comprueba al pulsar «Ver costo» para poder mostrar el motivo.
                 override fun isSelectableDate(utcTimeMillis: Long): Boolean {
                     val dia = Instant.ofEpochMilli(utcTimeMillis).atZone(ZoneOffset.UTC).toLocalDate()
                     return !dia.isBefore(primerDia) && !ReglasNegocio.haySolapamiento(ocupados, dia, dia)

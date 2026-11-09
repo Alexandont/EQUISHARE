@@ -86,8 +86,16 @@ class DetalleViewModel(
         }
     }
 
-    /** Primer día que el selector permite elegir. */
+    /** Primer día que cumple la anticipación mínima de RN-07 (se usa para informar al usuario). */
     fun primerDiaReservable(): LocalDate = ReglasNegocio.primerDiaReservable(reloj())
+
+    /**
+     * Primer día que el selector deja elegir: hoy en Lima. No se adelanta hasta el primer día
+     * reservable porque RN-07 se valida al confirmar el rango (en la app y en el servidor) y el
+     * usuario debe recibir el motivo del rechazo en lugar de encontrar días deshabilitados sin
+     * explicación. El selector solo bloquea el pasado y los días ya ocupados (RN-02).
+     */
+    fun primerDiaSeleccionable(): LocalDate = ReglasNegocio.hoyEnLima(reloj())
 
     fun estaOcupado(dia: LocalDate): Boolean =
         ReglasNegocio.haySolapamiento(_ui.value.ocupados, dia, dia)
